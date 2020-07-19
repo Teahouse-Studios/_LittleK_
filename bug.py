@@ -1,12 +1,12 @@
-import pip._vendor.requests as requests
+import requests
 import json
 import xml
 import re
 
 def on_load(server,old_mouble):
-    server.add_help_message('!!&bug <BUG的Mojira编号>','查询Mojira上的bug。')
+    server.add_help_message('!!&bug <Bug ID>','查询Mojira上的bug。')
 
-def bugrequest(pagename):
+def bugRequest(pagename):
     try:
         try:
             os.remove('bug_cache_text.txt')
@@ -75,11 +75,11 @@ def bugrequest(pagename):
     except Exception as e:      
         return ("发生错误："+str(e)+".")
 
-def buglookup(server,info):
+def bugLookup(server,info):
     title = info.content[6:]
     title = title.toupper()
     try:
-        result=bugrequest(title)
+        result = bugRequest(title)
     except Exception as e:
         server.reply(info,"§4发生错误：§r"+str(e))
     else:
@@ -89,4 +89,4 @@ def buglookup(server,info):
         
 def on_user_info(server, info):
     if info.content.startswith("!!&bug "):
-        buglookup(server,info)
+        bugLookup(server, info)
