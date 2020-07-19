@@ -46,15 +46,17 @@ def dungeonsVer():
             pass
     return('最新版：'+s+'\n')
 
+// Final output
 def on_user_info(server, info):
+    // All
     if info.content.startswith("!!&version") or info.content.startswith("!!&mcv"):
         server.tell(info, "Java版：\n" + javaVer() + "基岩版：\n" + bedrockVer() + "Minecraft Dungeons：\n")
-
+    // Java
     if info.content.startswith("!!&version java") or info.content.startswith("!!&version je") or info.content.startswith("!!&mcv java") or info.content.startswith("!!&mcv je") or info.content.startswith("!!&mcjv")
         server.tell(info, javaVer())
-
+    // Bedrock
     if info.content.startswith("!!&version bedrock") or info.content.startswith("!!&version be") or info.content.startswith("!!&mcv bedrock") or info.content.startswith("!!&mcv be") or info.content.startswith("!!&mcbv")
         server.tell(info, bedrockVer())
-
+    // Dungeons
     if info.content.startswith("!!&version dungeons") or info.content.startswith("!!&version mcd") or info.content.startswith("!!&mcv dungeons") or info.content.startswith("!!&mcv mcd") or info.content.startswith("!!&mcdv")
         server.tell(info, dungeonsVer())
