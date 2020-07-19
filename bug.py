@@ -3,6 +3,9 @@ import json
 import xml
 import re
 
+def on_load(server,old_mouble):
+    server.add_help_message('!!&bug <BUG的Mojira编号>','查询Mojira上的bug。')
+
 def bugrequest(pagename):
     try:
         try:
@@ -81,3 +84,9 @@ def buglookup(server,info):
         server.reply(info,"§4发生错误：§r"+str(e))
     else:
         server.reply(result)
+        
+        
+        
+def on_user_info(server, info):
+    if info.content.startswith("!!&bug "):
+        buglookup(server,info)
