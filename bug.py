@@ -1,6 +1,5 @@
 import pip._vendor.requests as requests
 import json
-import traceback
 import xml
 import re
 
