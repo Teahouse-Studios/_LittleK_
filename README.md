@@ -1,2 +1,4 @@
-# _LittleK_
-A MCDR port of https://github.com/Teahouse-Studios/bot 
+# \_LittleK\_
+Welcome! This is the [MCDR](https://github.com/Fallen-Breath/MCDReforged) port of the [Teahouse Studio QQ bot](https://github.com/Teahouse-Studios/bot).
+
+## Commands
