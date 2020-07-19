@@ -16,36 +16,39 @@ def javaVer():
 
 # Bedrock
 def bedrockVer():
-    q = requests.get('https://bugs.mojang.com/rest/api/2/project/10200/versions')
-    w = json.loads(q.text)
-    f = []
-    z = []
-    for x in w[:]:
-        if x['archived'] == False:
+    Mojiraurl = 'https://bugs.mojang.com/rest/api/2/project/10200/versions'
+    getJSON = requests.get(Mojiraurl)
+    loadJSON = json.loads(getJSON.text)
+    Beta = []
+    Release = []
+    for Version in loadJSON[:]:
+        if Version['archived'] == False:
             try:
-                e = re.match(r'(.*)Beta$',x['name'])
-                f.append(e.group(1))
+                findBeta = re.match(r'(.*)Beta$',Version['name'])
+                Beta.append(findBeta.group(1))
             except Exception:
-                z.append(x['name'])
+                Release.append(Version['name'])
         else:
             pass
-    h = '| '
-    d = h.join(f)
-    u = h.join(z)
-    return('Beta: '+str(d)+'\nRelease: '+u+'\n')
+    pipe = '| '
+    text1 = pipe.join(Beta)
+    text2 = pipe.join(Release)
+    return('Beta: '+text1+'\nRelease: '+text2+'\n')
 
 # Dungeons
 def dungeonsVer():
-    url = 'https://bugs.mojang.com/rest/api/2/project/11901/versions'
-    q = requests.get(url)
-    w = json.loads(q.text)
-    f = []
-    for x in w[:]:
-        if x['archived'] == False:
-            s = x['name']
+    Mojiraurl = 'https://bugs.mojang.com/rest/api/2/project/11901/versions'
+    getJSON = requests.get(Mojiraurl)
+    loadJSON = json.loads(getJSON.text)
+    Release = []
+    for Version in loadJSON[:]:
+        if Version['archived'] == False:
+            Release.append(Version['name'])
         else:
             pass
-    return('最新版：'+s+'\n')
+    pipe = '| '
+    text1 = pipe.join(Release)
+    return('最新版：'+text1+'\n')
 
 # Final output
 def on_user_info(server, info):
