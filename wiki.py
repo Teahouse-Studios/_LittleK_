@@ -14,75 +14,75 @@ def on_load(server,old_mouble):
     
 def m(lang,str1):
     if lang =='en':
-        JSONurl = 'https://minecraft.gamepedia.com/api.php?action=query&format=json&prop=info&inprop=url&redirects&titles='
-        metaurl = 'https://minecraft.gamepedia.com/'
+        jsonUrl = 'https://minecraft.gamepedia.com/api.php?action=query&format=json&prop=info&inprop=url&redirects&titles='
+        metaUrl = 'https://minecraft.gamepedia.com/'
     else:
-        JSONurl = 'https://minecraft-'+lang+'.gamepedia.com/api.php?action=query&format=json&prop=info&inprop=url&redirects&titles='
-        metaurl = 'https://minecraft-'+lang+'.gamepedia.com/'
+        jsonUrl = 'https://minecraft-'+lang+'.gamepedia.com/api.php?action=query&format=json&prop=info&inprop=url&redirects&titles='
+        metaUrl = 'https://minecraft-'+lang+'.gamepedia.com/'
     try:
-        pagename = str1
-        GETurl = JSONurl+pagename
-        metatext = requests.get(GETurl,timeout=15)
+        pageName = str1
+        getUrl = jsonUrl+pageName
+        metaText = requests.get(getUrl,timeout=15)
         try:
-            file = json.loads(metatext.text)
+            file = json.loads(metaText.text)
             pages = file['query']['pages']
             pageID = sorted(pages.keys())[0]
             if  int(pageID) == -1:
                 if 'missing' in pages['-1']:
                     try:
                         if lang =='en':
-                            Searchurl = 'https://minecraft.gamepedia.com/api.php?action=query&generator=search&gsrsearch='+str1+'&gsrsort=just_match&gsrenablerewrites&prop=info&gsrlimit=1&format=json'
+                            searchUrl = 'https://minecraft.gamepedia.com/api.php?action=query&generator=search&gsrsearch='+str1+'&gsrsort=just_match&gsrenablerewrites&prop=info&gsrlimit=1&format=json'
                         else:
-                            Searchurl = 'https://minecraft-'+lang+'.gamepedia.com/api.php?action=query&generator=search&gsrsearch='+str1+'&gsrsort=just_match&gsrenablerewrites&prop=info&gsrlimit=1&format=json'
-                        GETSearch = requests.get(Searchurl)
-                        ParseSearch = json.loads(GETSearch.text)
-                        SearchPage = ParseSearch['query']['pages']
-                        SearchPageID = sorted(SearchPage.keys())[0]
-                        SearchTitle = SearchPage[SearchPageID]['title']
-                        return ('[{"text":"发生错误:","color":"red"},{"text":"找不到条目，您是否要找的是：","color":"reset"},{"text":"'+SearchTitle+'","bold":true,"underlined":true,"color":"white","clickEvent":{"action":"run_command","value":"!!&wiki-'+lang+' '+SearchTitle+'"}},{"text":"？","color":"reset"}]')
+                            searchUrl = 'https://minecraft-'+lang+'.gamepedia.com/api.php?action=query&generator=search&gsrsearch='+str1+'&gsrsort=just_match&gsrenablerewrites&prop=info&gsrlimit=1&format=json'
+                        getSearch = requests.get(searchUrl)
+                        parseSearch = json.loads(getSearch.text)
+                        searchPage = parseSearch['query']['pages']
+                        searchPageID = sorted(searchPage.keys())[0]
+                        searchTitle = searchPage[searchPageID]['title']
+                        return ('[{"text":"发生错误:","color":"red"},{"text":"找不到条目，您是否要找的是：","color":"reset"},{"text":"'+searchTitle+'","bold":true,"underlined":true,"color":"white","clickEvent":{"action":"run_command","value":"!!&wiki-'+lang+' '+searchTitle+'"}},{"text":"？","color":"reset"}]')
                     except Exception:
                         return('[{"text":"发生错误：","color":"red"},{"text":"找不到条目。","color":"reset"}]')
                 else:
-                    return ('[{"text":"您要的"},{"text":"'+pagename+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+metaurl+urllib.parse.quote(pagename.encode('UTF-8'))+'"}}]')
+                    return ('[{"text":"您要的"},{"text":"'+pageName+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+metaUrl+urllib.parse.quote(pageName.encode('UTF-8'))+'"}}]')
 #                    return ('您要的'+pagename+'：'+l+urllib.parse.quote(pagename.encode('UTF-8')))
             else:
                 try:
-                    Pageurl = pages[pageID]['fullurl']
+                    pageUrl = pages[pageID]['fullurl']
                     if lang =='en':
-                        result = re.match(r'https://minecraft.gamepedia.com/(.*)', Pageurl, re.M | re.I)
-                        descriptionurl = 'https://minecraft.gamepedia.com/api.php?action=query&prop=extracts&exsentences=1&&explaintext&exsectionformat=wiki&format=json&titles=' + result.group(1)
+                        result = re.match(r'https://minecraft.gamepedia.com/(.*)', pageUrl, re.M | re.I)
+                        descUrl = 'https://minecraft.gamepedia.com/api.php?action=query&prop=extracts&exsentences=1&&explaintext&exsectionformat=wiki&format=json&titles=' + result.group(1)
                     else:
-                        result = re.match(r'https://minecraft-(.*).gamepedia.com/(.*)', Pageurl, re.M | re.I)
-                        descriptionurl = 'https://minecraft-'+result.group(1)+'.gamepedia.com/api.php?action=query&prop=extracts&exsentences=1&&explaintext&exsectionformat=wiki&format=json&titles='+result.group(2)
-                    GETdescription = requests.get(descriptionurl,timeout=5)
-                    Parsedescription = json.loads(GETdescription.text)
-                    descriptiontext = Parsedescription['query']['pages'][pageID]['extract']
+                        result = re.match(r'https://minecraft-(.*).gamepedia.com/(.*)', pageUrl, re.M | re.I)
+                        descUrl = 'https://minecraft-'+result.group(1)+'.gamepedia.com/api.php?action=query&prop=extracts&exsentences=1&&explaintext&exsectionformat=wiki&format=json&titles='+result.group(2)
+                    getDesc = requests.get(descUrl,timeout=5)
+                    parseDesc = json.loads(getDesc.text)
+                    descText = parseDesc['query']['pages'][pageID]['extract']
                     try:
-                        paragraph = re.match(r'.*(\#.*)',str1)
-                        Page = pages[pageID]['fullurl'] + urllib.parse.quote(paragraph.group(1).encode('UTF-8'))
+                        paraGraph = re.match(r'.*(\#.*)',str1)
+                        page = pages[pageID]['fullurl'] + urllib.parse.quote(paraGraph.group(1).encode('UTF-8'))
                     except Exception:
-                        Page = pages[pageID]['fullurl']
-                    Resultname = re.match(r'https://.*?/(.*)',Page)
-                    unquotename = urllib.parse.unquote(Resultname.group(1),encoding='UTF-8')
-                    unquotename = re.sub('_',' ',unquotename)
-                    if unquotename == str1:
-                        return ('[{"text":"您要的"},{"text":"'+pagename+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+Page+'"}},{"text":"："},{"text":"'+descriptiontext+'"}]')
+                        page = pages[pageID]['fullurl']
+                    resultName = re.match(r'https://.*?/(.*)',Page)
+                    unquoteName = urllib.parse.unquote(resultName.group(1),encoding='UTF-8')
+                    unquoteName = re.sub('_',' ',unquoteName)
+                    if unquoteName == str1:
+                        return ('[{"text":"您要的"},{"text":"'+pageName+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+page+'"}},{"text":"："},{"text":"'+descText+'"}]')
                     else:
-                        return ('[{"text":"您要的"},{"text":"'+pagename+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+Page+'"}},{"text":"('+str1+'->'+unquotename+')："},{"text":"'+descriptiontext+'"}]')
+                        return ('[{"text":"您要的"},{"text":"'+pageName+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+page+'"}},{"text":"('+str1+'->'+unquoteName+')："},{"text":"'+descText+'"}]')
 #                    return('您要的'+pagename+"："+xx)
                 except Exception as e:
                     try:
-                        paragraph = re.match(r'.*(\#.*)',str1)
-                        Page = pages[pageID]['fullurl'] + urllib.parse.quote(paragraph.group(1).encode('UTF-8'))
+                        paraGraph = re.match(r'.*(\#.*)',str1)
+                        page = pages[pageID]['fullurl'] + urllib.parse.quote(paraGraph.group(1).encode('UTF-8'))
                     except Exception:
-                        Page = pages[pageID]['fullurl']
-                    Resultname = re.match(r'https://.*?/(.*)',Page)
-                    unquotename = urllib.parse.unquote(Resultname.group(1),encoding='UTF-8')
-                    unquotename = re.sub('_',' ',unquotename)
-                    if unquotename == str1:
-                        return ('[{"text":"您要的"},{"text":"'+pagename+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+Page+'"}}]')
+                        page = pages[pageID]['fullurl']
+                    resultName = re.match(r'https://.*?/(.*)',page)
+                    unquoteName = urllib.parse.unquote(resultName.group(1),encoding='UTF-8')
+                    unquoteName = re.sub('_',' ',unquoteName)
+                    if unquoteName == str1:
+                        return ('[{"text":"您要的"},{"text":"'+pageName+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+page+'"}}]')
                     else:
-                        return ('[{"text":"您要的"},{"text":"'+pagename+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+Page+'"}},{"text":"('+str1+'->'+unquotename+')"}]')
+                        return ('[{"text":"您要的"},{"text":"'+pageName+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+Page+'"}},{"text":"('+str1+'->'+unquoteName+')"}]')
         except Exception as e:
             print(str(e))
             return('[{"text":"发生错误：","color":"red"},{"text":"内容非法。","color":"reset"}]')
