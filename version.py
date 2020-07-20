@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import requests
 import json
 import re
@@ -43,9 +44,9 @@ def bedrockVer():
         else:
             pass
     pipe = '| '
-    beta_name = pipe.join(Beta)
-    release_name = pipe.join(Release)
-    return 'Beta: ' + beta_name + '\nRelease: ' + release_name` + '\n'
+    beta_name = pipe.join(beta)
+    release_name = pipe.join(release)
+    return 'Beta: ' + beta_name + '\nRelease: ' + release_name + '\n'
 
 # Dungeons
 def dungeonsVer():
@@ -81,14 +82,14 @@ def on_user_info(server, info):
     if info.content.startswith("!!&version") or info.content.startswith("!!&mcv"):
         server.tell(info, "Java版：\n" + javaVer() + "基岩版（Mojira）：\n" + bedrockVer() + "Minecraft Dungeons（Mojira）：\n" + dungeonsVer() + "Minecraft Earth（Mojira）：\n" + earthVer())
     # Java
-    if info.content.startswith("!!&version java") or info.content.startswith("!!&version je") or info.content.startswith("!!&mcv java") or info.content.startswith("!!&mcv je") or info.content.startswith("!!&mcjv")
+    if info.content.startswith("!!&version java") or info.content.startswith("!!&version je") or info.content.startswith("!!&mcv java") or info.content.startswith("!!&mcv je") or info.content.startswith("!!&mcjv"):
         server.tell(info, javaVer())
     # Bedrock
-    if info.content.startswith("!!&version bedrock") or info.content.startswith("!!&version be") or info.content.startswith("!!&mcv bedrock") or info.content.startswith("!!&mcv be") or info.content.startswith("!!&mcbv")
+    if info.content.startswith("!!&version bedrock") or info.content.startswith("!!&version be") or info.content.startswith("!!&mcv bedrock") or info.content.startswith("!!&mcv be") or info.content.startswith("!!&mcbv"):
         server.tell(info, bedrockVer())
     # Dungeons
-    if info.content.startswith("!!&version dungeons") or info.content.startswith("!!&version mcd") or info.content.startswith("!!&mcv dungeons") or info.content.startswith("!!&mcv mcd") or info.content.startswith("!!&mcdv")
+    if info.content.startswith("!!&version dungeons") or info.content.startswith("!!&version mcd") or info.content.startswith("!!&mcv dungeons") or info.content.startswith("!!&mcv mcd") or info.content.startswith("!!&mcdv"):
         server.tell(info, dungeonsVer())
     # Earth
-    if info.content.startswith("!!&version earth") or info.content.startswith("!!&version mce") or info.content.startswith("!!&mcv earth") or info.content.startswith("!!&mcv mce") or info.content.startswith("!!&mcev")
+    if info.content.startswith("!!&version earth") or info.content.startswith("!!&version mce") or info.content.startswith("!!&mcv earth") or info.content.startswith("!!&mcv mce") or info.content.startswith("!!&mcev"):
         server.tell(info, earthVer())
