@@ -92,15 +92,8 @@ def on_server_startup ():
             yaml_raw = open("./config/version-loop.yml", 'r', encoding="utf-8").read()
             yaml_data = yaml.load(yaml_raw)
         else:
-            yaml_text = """
-###########################################
-#      A TEAHOUSE STUDIOS PRODUCTION      #
-#       Version_loop from _LittleK_       #
-#           CONFIGURATION FILE            #
-###########################################
-#      Copyright 2020 Teahouse Studios    #
-#        (No licence avalabile yet)       #
-###########################################
+            yaml_text = """# Version_loop Config
+# Copyright 2020 Teahouse Studios
 
 # Toggle this if you don't want Mojira detection
 mojira: true
