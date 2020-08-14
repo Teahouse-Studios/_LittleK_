@@ -1,10 +1,5 @@
-
-
 import pip._vendor.requests as requests
 import json
-import traceback
-import xml
-import copy
 import re
 import urllib
 def on_load(server,old_mouble):
@@ -49,10 +44,10 @@ def m(lang,str1):
                 try:
                     pageUrl = pages[pageID]['fullurl']
                     if lang =='en':
-                        result = re.match(r'https://minecraft.gamepedia.com/(.*)', pageUrl, re.M | re.I)
+                        result = re.match(r'https://minecraft\.gamepedia.com/(.*)', pageUrl, re.M | re.I)
                         descUrl = 'https://minecraft.gamepedia.com/api.php?action=query&prop=extracts&exsentences=1&&explaintext&exsectionformat=wiki&format=json&titles=' + result.group(1)
                     else:
-                        result = re.match(r'https://minecraft-(.*).gamepedia.com/(.*)', pageUrl, re.M | re.I)
+                        result = re.match(r'https://minecraft-(.*)\.gamepedia.com/(.*)', pageUrl, re.M | re.I)
                         descUrl = 'https://minecraft-'+result.group(1)+'.gamepedia.com/api.php?action=query&prop=extracts&exsentences=1&&explaintext&exsectionformat=wiki&format=json&titles='+result.group(2)
                     getDesc = requests.get(descUrl,timeout=5)
                     parseDesc = json.loads(getDesc.text)
@@ -63,7 +58,6 @@ def m(lang,str1):
                     except Exception:
                         page = pages[pageID]['fullurl']
                     resultName = re.match(r'https://.*?/(.*)',Page)
-                    unquoteName = urllib.parse.unquote(resultName.group(1),encoding='UTF-8')
                     unquoteName = re.sub('_',' ',unquoteName)
                     if unquoteName == str1:
                         return ('[{"text":"您要的"},{"text":"'+pageName+'","bold":true,"underlined":true,"clickEvent":{"action":"open_url","value":"'+page+'"}},{"text":"："},{"text":"'+descText+'"}]')
@@ -147,7 +141,7 @@ def Wiki(path1,pagename):
     except Exception as e:
         print(str(e))
         try:
-            Check = re.match(r'https://.*-(.*).gamepedia.com',path1)
+            Check = re.match(r'https://.*-(.*)\.gamepedia.com',path1)
             Check1 = re.sub(Check.group(1) + r':', "", pagename)
             Check2 = re.sub(r':.*', "", Check1)
             print(Check1)
