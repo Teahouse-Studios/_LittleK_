@@ -1,7 +1,5 @@
 import requests
 import json
-import xml
-import re
 
 def on_load(server,old_mouble):
     server.add_help_message('!!&bug <Bug ID>','查询Mojira上的bug。')
@@ -13,7 +11,6 @@ def bugRequest(pagename):
         except Exception:
             pass
         url_str ='https://bugs.mojang.com/si/jira.issueviews:issue-xml/'+ str.upper(pagename) + '/' + str.upper(pagename) + '.xml'
-        respose_str =  requests.get(url_str,timeout=10)
         respose_str =  requests.get(url_str,timeout=10)
         try:
             respose_str.encoding = 'utf-8'
