@@ -210,5 +210,5 @@ def tellraw(server,info,player):
 def on_user_info(server, info):
     if info.content.startswith("!!&wiki"):
         a=wikilookup(info)
-        print(a)
+#        print(a)   This line is just for test
         tellraw(server,a,info.player)
